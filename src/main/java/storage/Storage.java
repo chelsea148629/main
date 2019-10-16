@@ -2,13 +2,7 @@ package storage;
 
 import Dictionary.Word;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.TreeMap;
 
 /**
@@ -111,4 +105,56 @@ public class Storage {
         }
     }
 
+    public void writeTempQuizAns(String s){
+        File file = new File("./tempQuizAns");
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try {
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            bw.write(s);
+            //bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bw.close();
+                fw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String loadTempQuizAns(){
+        File file = new File("./tempQuizAns");
+        FileReader fr = null;
+        BufferedReader br = null;
+        try {
+            fr = new FileReader(file);
+            br = new BufferedReader(fr);
+            TreeMap<String, Word> wordBank = new TreeMap<>();
+            String line = br.readLine();
+            /*while (line != null) {
+                // get data from storage
+                // parse the line first
+                String[] parsedWordAndMeaning = line.split(":");
+                Word word = new Word(parsedWordAndMeaning[0].trim(), parsedWordAndMeaning[1].trim());
+                wordBank.put(word.getWord(), word);
+                line = br.readLine();
+            }
+             */
+            return line;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                br.close();
+                fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

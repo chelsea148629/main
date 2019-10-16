@@ -86,6 +86,9 @@ public class Parser {
                 return null;
             } else if (taskInfo[0].equals("quiz")){
                 return new QuizCommand();
+            } else if (taskInfo[0].equals("ans")){
+                return new QuizAnsCommand(taskInfo[1]);
+
             }
             else {
                 try {

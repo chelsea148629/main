@@ -45,7 +45,10 @@ public class QuizCommand extends Command  {
         }
 
         int optionSequence = random.nextInt(4);
+        storage.writeTempQuizAns(Integer.toString((4-optionSequence)%4+1));
+        //System.out.println(Integer.toString((4-optionSequence)%4+1));
         ui.quizDisplay(question, options, optionSequence);
+        /*
         Scanner in = new Scanner(System.in);
         String userAns =  in.nextLine();
         if(userAns.equals(Integer.toString((4-optionSequence)%4+1))){
@@ -54,6 +57,8 @@ public class QuizCommand extends Command  {
         else{
             ui.quizResponse(false, answer);
         }
+
+         */
         return;
     }
 
