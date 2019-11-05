@@ -8,7 +8,6 @@ import exception.WordCountEmptyException;
 import storage.Storage;
 import ui.Ui;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -36,8 +35,12 @@ public class SearchCommand extends Command {
                     + "\" in local dictionary.\nLooking up Oxford dictionary.\n\n");
             try {
                 String result = OxfordCall.onlineSearch(searchTerm);
+                Word w = new Word (searchTerm, result);
+                AddCommand addCommand = new AddCommand(w);
+                addCommand.execute(ui, bank, storage);
+                bank.increaseSearchCount(searchTerm);
                 stringBuilder.append(ui.showSearch(this.searchTerm, result));
-            } catch (NoWordFoundException e2) {
+            } catch (NoWordFoundException | WordCountEmptyException e2) {
                 stringBuilder.append("Failed to find the word from Oxford dictionary.\n");
             }
 
