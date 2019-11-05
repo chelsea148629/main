@@ -35,7 +35,7 @@ public class SearchCommand extends Command {
                     + "\" in local dictionary.\nLooking up Oxford dictionary.\n\n");
             try {
                 String result = OxfordCall.onlineSearch(searchTerm);
-                Word w = new Word (searchTerm, result);
+                Word w = new Word(searchTerm, result);
                 AddCommand addCommand = new AddCommand(w);
                 addCommand.execute(ui, bank, storage);
                 bank.increaseSearchCount(searchTerm);
