@@ -197,7 +197,7 @@ public class Storage {
                 Row row = rowIterator.next();
                 Iterator<Cell> cellIterator = row.cellIterator();
 
-                bank.addWord(new
+                bank.addWordToExampleBank(new
                         Word(cellIterator.next().getStringCellValue(), cellIterator.next().getStringCellValue())
                 );
             }
@@ -215,6 +215,19 @@ public class Storage {
                     bank.addTagToWord(allWords[i], tag);
                 }
             }
+
+            Sheet exampleBankSheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIteratorExample = exampleBankSheet.iterator();
+            rowIteratorExample.next();
+            while (rowIteratorExample.hasNext()) {
+                Row row = rowIteratorExample.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+
+                bank.addWord(new
+                        Word(cellIterator.next().getStringCellValue(), cellIterator.next().getStringCellValue())
+                );
+            }
+
             fileInputStream.close();
         } catch (FileNotFoundException e) {
             createExcelFile();

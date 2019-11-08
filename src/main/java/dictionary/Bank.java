@@ -170,8 +170,14 @@ public class Bank {
         return wordBank.searchWordMeaning(searchTerm);
     }
 
-    public String searchExampleBank(String searchTerm) throws WordBankEmptyException, NoWordFoundException {
-        return exampleBank.searchWordMeaning(searchTerm);
+    public String searchExampleBank(String searchTerm) {
+        try {
+            return exampleBank.searchWordMeaning(searchTerm);
+        } catch (WordBankEmptyException e) {
+            return e.showError();
+        } catch (NoWordFoundException e) {
+            return e.showError();
+        }
     }
 
     public void increaseSearchCount(String searchTerm) throws WordCountEmptyException, NoWordFoundException {
