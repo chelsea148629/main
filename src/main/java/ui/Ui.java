@@ -147,8 +147,13 @@ public class Ui {
         return stringBuilder.toString();
     }
 
-    public String showSearch(String description, String meaning) {
-        return ("Here is the meaning of " + description + ": " + meaning + "\n");
+    public String showSearch(String description, String meaning, String example) {
+        if (example.equals(null)) {
+            return ("Here is the meaning of " + description + ": " + meaning + "\n");
+        } else {
+            return ("Here is the meaning of " + description + ": " + meaning + ",\n" +
+                    "Here is the example usage:" + example);
+        }
     }
 
     /**

@@ -15,6 +15,7 @@ public class Bank {
     TagBank tagBank;
     SynonymBank synonymBank;
     WordCount wordCount;
+    WordBank exampleBank;
 
     /**
      * Initiates an empty bank.
@@ -24,14 +25,23 @@ public class Bank {
         tagBank = new TagBank();
         synonymBank = new SynonymBank();
         wordCount = new WordCount(wordBank);
+        exampleBank = new WordBank();
     }
 
     public WordBank getWordBankObject() {
         return wordBank;
     }
 
+    public WordBank getExampleBankObject() {
+        return exampleBank;
+    }
+
     public TreeMap<String, Word> getWordBankData() {
         return wordBank.getWordBank();
+    }
+
+    public TreeMap<String, Word> getExampleBankData() {
+        return exampleBank.getWordBank();
     }
 
     public WordCount getWordCountObject() {
@@ -42,12 +52,19 @@ public class Bank {
         return wordBank.getWord(word);
     }
 
+    public Word getWordFromExampleBank(String word) throws NoWordFoundException {
+        return exampleBank.getWord(word);
+    }
     public TagBank getTagBank() {
         return tagBank;
     }
 
     public int getWordBankSize() {
         return wordBank.getSize();
+    }
+
+    public int getExampleBankSize() {
+        return exampleBank.getSize();
     }
 
     public int getTagBankSize() {
@@ -83,6 +100,10 @@ public class Bank {
         tagBank.addWordToAllTags(word);
         synonymBank.addWordAllSynonyms(word);
         wordCount.addWord(word);
+    }
+
+    public void addWordToExampleBank(Word word) throws WordAlreadyExistsException {
+        exampleBank.addWord(word);
     }
 
     /**
@@ -147,6 +168,10 @@ public class Bank {
 
     public String searchWordBankForMeaning(String searchTerm) throws WordBankEmptyException, NoWordFoundException {
         return wordBank.searchWordMeaning(searchTerm);
+    }
+
+    public String searchExampleBank(String searchTerm) throws WordBankEmptyException, NoWordFoundException {
+        return exampleBank.searchWordMeaning(searchTerm);
     }
 
     public void increaseSearchCount(String searchTerm) throws WordCountEmptyException, NoWordFoundException {

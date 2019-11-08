@@ -27,8 +27,9 @@ public class SearchCommand extends Command {
     public String execute(Ui ui, Bank bank, Storage storage) {
         try {
             String meaning = bank.searchWordBankForMeaning(this.searchTerm);
+            String example = bank.searchExampleBank(this.searchTerm);
             bank.increaseSearchCount(searchTerm);
-            return ui.showSearch(this.searchTerm, meaning);
+            return ui.showSearch(this.searchTerm, meaning, example);
         } catch (NoWordFoundException e) {
             StringBuilder stringBuilder = new StringBuilder();
             //Look up Oxford dictionary.
@@ -36,9 +37,9 @@ public class SearchCommand extends Command {
                     + "\" in local dictionary.\nLooking up Oxford dictionary.\n\n");
             try {
                 String result = OxfordCall.onlineSearch(searchTerm);
-                storage.writeWordBankExcelFile(bank.getWordBankObject());
+                storage.writeWordBankExcelFile(bank.getWordBankObject(), 0);
                 bank.addWord(new Word(searchTerm, result));
-                stringBuilder.append(ui.showSearch(this.searchTerm, result));
+                stringBuilder.append(ui.showSearch(this.searchTerm, result, null));
             } catch (NoWordFoundException | WordAlreadyExistsException e2) {
                 stringBuilder.append("Failed to find the word from Oxford dictionary.\n");
             }

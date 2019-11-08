@@ -173,8 +173,9 @@ public class Storage {
      * Writes the data to excel file.
      * @param bank represents the data bank
      */
-    public void writeExcelFile(Bank bank) {
-        writeWordBankExcelFile(bank.getWordBankObject());
+    public void
+    writeExcelFile(Bank bank) {
+        writeWordBankExcelFile(bank.getWordBankObject(), 0);
         writeTagBankExcelFile(bank.getTagBank());
     }
 
@@ -271,6 +272,20 @@ public class Storage {
 
         tagBankSheet.autoSizeColumn(0);
         tagBankSheet.autoSizeColumn(1);
+
+        Sheet exampleBankSheet = workbook.createSheet("ExampleBank");
+        headerRow = exampleBankSheet.createRow(0);
+
+        cell = headerRow.createCell(0);
+        cell.setCellValue("Word");
+        cell.setCellStyle(headerCellStyle);
+
+        cell = headerRow.createCell(1);
+        cell.setCellValue("Meaning");
+        cell.setCellStyle(headerCellStyle);
+
+        exampleBankSheet.autoSizeColumn(0);
+        exampleBankSheet.autoSizeColumn(1);
 
         try {
             FileOutputStream fileOut = new FileOutputStream(EXCEL_PATH);
@@ -391,14 +406,14 @@ public class Storage {
      * Writes data to WordBank sheet of excel file.
      * @param wordBank data to be written to file
      */
-    public void writeWordBankExcelFile(WordBank wordBank) {
+    public void writeWordBankExcelFile(WordBank wordBank, Integer index) {
         FileInputStream fileInputStream;
         FileOutputStream fileOut;
         try {
             fileInputStream = new FileInputStream(excelFile);
             Workbook workbook = WorkbookFactory.create(fileInputStream);
 
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = workbook.getSheetAt(index);
             Word[] allWords = wordBank.getAllWordsAsList();
 
             for (int i = 1; i <= allWords.length; i++) {

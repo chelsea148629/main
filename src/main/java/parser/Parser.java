@@ -1,23 +1,6 @@
 package parser;
 
-import command.AddCommand;
-import command.AddSynonymCommand;
-import command.AddTagCommand;
-import command.BadCommand;
-import command.Command;
-import command.DeleteCommand;
-import command.EditCommand;
-import command.ExitCommand;
-import command.HelpCommand;
-import command.HistoryCommand;
-import command.ListCommand;
-import command.ListTagCommand;
-import command.QuizCommand;
-import command.SearchBeginCommand;
-import command.SearchCommand;
-import command.SearchFrequencyCommand;
-import command.SearchTagCommand;
-import command.SetReminderCommand;
+import command.*;
 import dictionary.Word;
 
 import exception.CommandInvalidException;
@@ -105,6 +88,8 @@ public class Parser {
                 command = parseQuiz(taskInfo);
             } else if (userCommand.equals("search_tag")) {
                 command = parseSearchTag(taskInfo);
+            } else if (userCommand.equals("add_example")) {
+                command = parseAddExample(taskInfo);
             } else {
                 try {
                     throw new CommandInvalidException(input);
@@ -459,6 +444,54 @@ public class Parser {
             throw new WrongQuizFormatException();
         }
         return new QuizCommand();
+    }
+
+    protected static Command parseAddExample(String[] taskInfo) throws WrongAddFormatException,
+            EmptyWordException, EmptyTagException, InvalidCharacterException {
+        if (taskInfo.length == 1) {
+            throw new WrongAddFormatException();
+        }
+        String[] wordDetail = taskInfo[1].split("w/");
+        if (wordDetail.length != 2) {
+            throw new WrongAddFormatException();
+        }
+        wordDetail = wordDetail[1].split("e/");
+        if (wordDetail.length != 2) {
+            throw new WrongAddFormatException();
+        }
+        String wordDescription = wordDetail[0].trim();
+        if (wordDescription.length() == 0) {
+            throw new EmptyWordException();
+        }
+        if (!isValidInputWord(wordDescription)) {
+            throw new InvalidCharacterException();
+        }
+        String[] meaningAndTag = wordDetail[1].split("t/");
+        String meaning = meaningAndTag[0].trim();
+        if (!isValidInputWord(meaning)) {
+            throw new InvalidCharacterException();
+        }
+        if (meaning.length() == 0) {
+            throw new EmptyWordException();
+        }
+        Word word;
+        if (meaningAndTag.length > 1) {
+            HashSet<String> tags = new HashSet<>();
+            for (int j = 1; j < meaningAndTag.length; ++j) {
+                if (meaningAndTag[j].trim().length() == 0) {
+                    throw new EmptyTagException();
+                }
+                if (isValidInputWord(meaningAndTag[j])) {
+                    tags.add(meaningAndTag[j]);
+                } else {
+                    throw new InvalidCharacterException();
+                }
+            }
+            word = new Word(wordDescription, meaning, tags);
+        } else {
+            word = new Word(wordDescription, meaning);
+        }
+        return new AddExampleCommand(word);
     }
 
     /**
